@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c4039d5255eb5b54bb460165a5d90fc5, type: 2}
     - target: {fileID: 919132149155446097, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
       propertyPath: m_Name
-      value: airplane
+      value: Airplane
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
       propertyPath: m_IsActive
@@ -86,6 +86,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7089013072967150329}
+    - targetCorrespondingSourceObject: {fileID: 7000236508814121147, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2014928794233671202}
   m_SourcePrefab: {fileID: 100100000, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
 --- !u!1 &1314947522455399385 stripped
 GameObject:
@@ -138,3 +141,22 @@ CapsuleCollider:
   m_Height: 5.33
   m_Direction: 0
   m_Center: {x: 0, y: 0.2, z: 0.66}
+--- !u!1 &9212990568083279411 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7000236508814121147, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
+  m_PrefabInstance: {fileID: 2233442504487130760}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2014928794233671202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212990568083279411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea85bee275e0ea44a5bbf73136b3898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: {x: 0, y: 0, z: 2500}
+  randomize: 1

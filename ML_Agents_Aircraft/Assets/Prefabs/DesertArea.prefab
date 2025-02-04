@@ -58,6 +58,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7304435393452127226}
+  - component: {fileID: 7114008058312164511}
   m_Layer: 0
   m_Name: DesertArea
   m_TagString: Untagged
@@ -85,6 +86,22 @@ Transform:
   - {fileID: 7527496228546839832}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7114008058312164511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2662998345866518928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 812775c3e5682ed4a8241ccb7986e2c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  racePath: {fileID: 5040543033090303026}
+  checkpointPrefab: {fileID: 8766797340269474725, guid: 8df3af0014991d248b439bd031a10196, type: 3}
+  finishCheckpointPrefab: {fileID: 7083421887555129279, guid: 1a6d9e565a5115544a7bb6f55f3075b1, type: 3}
+  trainingMode: 0
 --- !u!1 &5073261256667255279
 GameObject:
   m_ObjectHideFlags: 0
