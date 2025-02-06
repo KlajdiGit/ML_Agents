@@ -15,12 +15,30 @@ namespace Aircraft
         public float rollSpeed = 100f;
         public float boostMultiplier = 2f;
 
+        [Header("Explosion Variables")]
+        [Tooltip("The aircraft mesh that will disappear on explosion")]
+        public GameObject meshObject;
+
+        [Tooltip("The game object of the explosion particle effect")]
+        public GameObject explosionEffect;
+
+
+        [Header("Training")]
+        [Tooltip("Number of steps to time out after in training")]
+        public int stepTimeout = 300;
+
         public int NectCheckpointIndex { get; set; }
 
         // Components to keep track of
         private AircraftArea area;
         new private Rigidbody rigidbody;
         private TrailRenderer trail;
+
+        // When the next step timeout will be during training
+        private float nextStepTimeout;
+
+        // Whether the aircraft is frozen (intentionally not flying)
+        private bool frpzen = false;
 
         // Control
         private float pitchChange = 0f;
@@ -32,7 +50,6 @@ namespace Aircraft
         private float smoothRollChange = 0f;
         private float maxRollAngle = 45f;
         private bool boost;
-
 
         /// <summary>
         /// Called when agent is first initialized

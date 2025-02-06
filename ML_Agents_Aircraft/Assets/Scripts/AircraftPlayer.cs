@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.MLAgents.Actuators;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,10 +22,41 @@ namespace Aircraft
         /// </summary>
         public override void Initialize()
         {
+            base.Initialize();
+
             pitchInput.Enable();
             yawInput.Enable();
             boostInput.Enable();
             pauseInput.Enable();
+        }
+
+
+        /// <summary>
+        /// Reads player input and converts it to a vector action array
+        /// </summary>
+        /// <param name="actionsOut">An array of floats for ONActionReceived to use</param>
+        public override void Heuristic(in ActionBuffers actionsOut)
+        {
+            var discreteActions = actionsOut.DiscreteActions;
+
+            // Pitch: 1 == up, 0 == none, -1 == down
+            float pitchValue = Mathf.Round(pitchInput.ReadValue<float>());
+
+            // Yaw: 1 == turn right, 0 == none, -1 == turn left
+            float yawValue = Mathf.Round(yawInput.ReadValue<float>());
+
+            // Boost: 1 == boost, 0 == no boost
+            float boostValue = Mathf.Round(boostInput.ReadValue<float>());
+
+            // Convert -1 (down) to discrete value 2
+            if (pitchValue == -1) pitchValue = 2f;
+
+            // Convert -1 (turn left) to discrete value 2
+            if (yawValue == -1) yawValue = 2f;
+
+            discreteActions[0] = (int)pitchValue;
+            discreteActions[1] = (int)yawValue;
+            discreteActions[2] = (int)boostValue;
         }
 
         /// <summary>
