@@ -27,6 +27,8 @@ namespace Aircraft
         [Tooltip("Number of steps to time out after in training")]
         public int stepTimeout = 300;
 
+        public int NextCheckpointIndex {  get; set; }   
+
         public int NectCheckpointIndex { get; set; }
 
         // Components to keep track of
@@ -38,7 +40,7 @@ namespace Aircraft
         private float nextStepTimeout;
 
         // Whether the aircraft is frozen (intentionally not flying)
-        private bool frpzen = false;
+        private bool frozen = false;
 
         // Control
         private float pitchChange = 0f;
@@ -59,8 +61,26 @@ namespace Aircraft
             area = GetComponent<AircraftArea>();
             rigidbody = GetComponent<Rigidbody>();
             trail = GetComponent<TrailRenderer>();
+
+            // Override the max step set in the inspector
+            // Max 5000 steps if training, infinite steps if racing
+            MaxStep = area.trainingMode ? 5000 : 0;
         }
 
+        /// <summary>
+        /// Called when a new episode begins
+        /// </summary>
+        public override void OnEpisodeBegin()
+        {
+            // Reset the velocity, position and orientation
+            rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+            trail.emitting = false;
+            area.ResetAgentPosition(agent: this, randomize: area.trainingMode);
+
+            // Update the step timeout if training
+            if (area.trainingMode) nextStepTimeout = StepCount + stepTimeout;
+        }
 
         /// <summary>
         /// Read action inputs from vectorAction
@@ -68,6 +88,8 @@ namespace Aircraft
         /// <param name="actions"></param>
         public override void OnActionReceived(ActionBuffers actions)
         {
+            if (frozen) return;
+
             // Read values for pitch and yaw
             pitchChange = actions.DiscreteActions[0]; // up or none
             if (pitchChange == 2) pitchChange = -1; // down
@@ -80,9 +102,76 @@ namespace Aircraft
             trail.emitting = boost;
 
             ProcessMovement();
+
+            if(area.trainingMode)
+            {
+                // Small negative reward every step
+                AddReward(-1f / MaxStep);
+
+                // Make sure we haven't tun out of time if training
+                if(StepCount > nextStepTimeout) 
+                {
+                    AddReward(-.5f);
+                    EndEpisode();
+                }
+
+                Vector3 localCheckpointDir = VectorToNextCheckpoint();
+                if (localCheckpointDir.magnitude < Academy.Instance.EnvironmentParameters.GetWithDefault("checkpoint_radius", 0f))
+                {
+                    GotCheckpoint();
+                }
+            }
         }
 
-        
+
+        /// <summary>
+        /// Prevent the agent from moving and taking actions
+        /// </summary>
+        public void FreezeAgent()
+        {
+            Debug.Assert(area.trainingMode == false, "Freeze/Thaw not supported in training");
+            frozen = true;
+            rigidbody.Sleep();
+            trail.emitting = false;
+        }
+
+        /// <summary>
+        /// Resume agent movement and actions
+        /// </summary>
+        public void ThawAgent()
+        {
+            Debug.Assert(area.trainingMode == false, "Freeze/Thaw not supported in training");
+            frozen = false;
+            rigidbody.WakeUp();
+        }
+
+
+        /// <summary>
+        /// Gets a vector to the next checkpoint the agent needs to fly through
+        /// </summary>
+        /// <returns> A local-space vector</returns>
+        private Vector3 VectorToNextCheckpoint()
+        {
+            Vector3 nextCheckpointDir = area.checkPoints[NextCheckpointIndex].transform.position - transform.position;
+            Vector3 localCheckpointDir = transform.InverseTransformDirection(nextCheckpointDir);
+            return localCheckpointDir;
+        }
+
+        /// <summary>
+        /// Called when the agent flies through the correct checkpoint
+        /// </summary>
+        private void GotCheckpoint()
+        {
+            // Next checkpoint reached, update
+            NextCheckpointIndex = (NextCheckpointIndex + 1) % area.checkPoints.Count;
+
+            if(area.trainingMode)
+            {
+                AddReward(.5f);
+                nextStepTimeout = StepCount + stepTimeout;
+            }
+        }
+
         /// <summary>
         /// Calculate and apply movement
         /// </summary>
