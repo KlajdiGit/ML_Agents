@@ -95,11 +95,11 @@ namespace Aircraft
             if (randomize)
             {
                 // Pick a new next checkpoint at random
-                agent.NectCheckpointIndex = Random.Range(0, checkPoints.Count);
+                agent.NextCheckpointIndex = Random.Range(0, checkPoints.Count);
             }
 
             // Set start position to the previous checkpoint
-            int previousCheckpointIndex = agent.NectCheckpointIndex - 1;
+            int previousCheckpointIndex = agent.NextCheckpointIndex - 1;
             if(previousCheckpointIndex == -1) previousCheckpointIndex = checkPoints.Count - 1;
 
             float startPosition = racePath.FromPathNativeUnits(previousCheckpointIndex, CinemachinePathBase.PositionUnits.PathUnits);

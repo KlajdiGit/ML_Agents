@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 
 namespace Aircraft
 {
@@ -29,7 +30,6 @@ namespace Aircraft
 
         public int NextCheckpointIndex {  get; set; }   
 
-        public int NectCheckpointIndex { get; set; }
 
         // Components to keep track of
         private AircraftArea area;
@@ -58,9 +58,15 @@ namespace Aircraft
         /// </summary>
         public override void Initialize()
         {
-            area = GetComponent<AircraftArea>();
+            //area = GetComponent<AircraftArea>();
+            area = GetComponentInParent<AircraftArea>();
             rigidbody = GetComponent<Rigidbody>();
             trail = GetComponent<TrailRenderer>();
+
+            Debug.Assert(area != null, "AircraftArea component is missing.");
+            Debug.Assert(rigidbody != null, "Rigidbody component is missing.");
+            Debug.Assert(trail != null, "TrailRenderer component is missing.");
+
 
             // Override the max step set in the inspector
             // Max 5000 steps if training, infinite steps if racing
@@ -123,6 +129,37 @@ namespace Aircraft
             }
         }
 
+        /// <summary>
+        /// Collects observations used by the agent to make decisions
+        /// </summary>
+        /// <param name="sensor">The vector sensor</param>
+        public override void CollectObservations(VectorSensor sensor)
+        {
+            // Observer aircraft velocity (1 Vector3)
+            sensor.AddObservation(transform.InverseTransformDirection(rigidbody.velocity));
+
+            // Where is the next checkpoint? (1 Vector3)
+            sensor.AddObservation(VectorToNextCheckpoint());
+
+            // Orientation of the next checkpoint (1 Vector3)
+            Vector3 nextCheckpointForward = area.checkPoints[NextCheckpointIndex].transform.forward;
+            sensor.AddObservation(transform.InverseTransformDirection(nextCheckpointForward));
+
+            // Total Observations = 3 + 3 + 3 = 9
+        }
+
+
+
+        /// <summary>
+        /// In this project, we only except Heuristic to be used  to be used on AircraftPlayer
+        /// </summary>
+        /// <param name="actionsOut"></param>
+        public override void Heuristic(in ActionBuffers actionsOut)
+        {
+            Debug.LogError("Heuristic() was called on " + gameObject.name +
+                          " Make sure only the AircraftPlayer is set to Behavior Type: Heuristic Only.");
+
+        }
 
         /// <summary>
         /// Prevent the agent from moving and taking actions
@@ -218,6 +255,67 @@ namespace Aircraft
 
             // Set the new rotation
             transform.rotation = Quaternion.Euler(pitch, yaw, roll);
+        }
+
+
+
+        /// <summary>
+        /// React to entering a trigger
+        /// </summary>
+        /// <param name="other"> The collider entered</param>
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.transform.CompareTag("checkpoint") &&
+               other.gameObject == area.checkPoints[NextCheckpointIndex])
+            {
+                GotCheckpoint();
+            }
+        }
+
+        /// <summary>
+        /// React to collision
+        /// </summary>
+        /// <param name="collision">Collision info</param>
+        private void OnCollisionEnter(Collision collision)
+        {
+            if(!collision.transform.CompareTag("agent"))
+            {
+                //We hit something that wasn't another agent
+                if(area.trainingMode)
+                {
+                    AddReward(-1f);
+                    EndEpisode();
+                }
+                else
+                {
+                    StartCoroutine(ExplosionReset());
+                }
+            }
+            
+        }
+
+        /// <summary>
+        /// Restes the aircraft to the most recent complete checkpoint
+        /// </summary>
+        /// <returns> yield return</returns>
+        private IEnumerator ExplosionReset()
+        {
+            FreezeAgent();
+
+            // Disable aircraft mesh object, enable explosion
+            meshObject.SetActive(false);
+            explosionEffect.SetActive(true);
+            yield return new WaitForSeconds(2f);
+
+            // Disable explosion, re-enable aircraft mesh
+            meshObject.SetActive(true);
+            explosionEffect.SetActive(false);
+
+            // Reset Position
+            area.ResetAgentPosition(agent: this);
+            yield return new WaitForSeconds(1f);
+
+            ThawAgent();
         }
     }
 }
