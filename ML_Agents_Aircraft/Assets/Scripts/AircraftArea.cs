@@ -22,8 +22,13 @@ namespace Aircraft
         [Tooltip("If true, enable training mode")]
         public bool trainingMode;
 
+        public GameObject bonusPrefab;
+
         public List<AircraftAgent> aircraftAgents { get; private set; } 
         public List<GameObject> checkPoints {  get; private set; }
+        public List<GameObject> bonusBoxes { get; private set; } = new List<GameObject>();
+   
+
 
         /// <summary>
         /// Set up the area
@@ -31,6 +36,7 @@ namespace Aircraft
         private void Start()
         {
             if(checkPoints == null) CreateCheckpoints();
+
         }
 
 
@@ -62,6 +68,7 @@ namespace Aircraft
             Debug.Assert(racePath != null, "Race Path was not set");
             checkPoints = new List<GameObject>();
             int numCheckpoints = (int)racePath.MaxUnit(CinemachinePathBase.PositionUnits.PathUnits);
+
             for (int i = 0; i < numCheckpoints; i++)
             {
                 // Instantiate either a checkpoint or finish line checkpoint
@@ -76,6 +83,17 @@ namespace Aircraft
 
                 // Add the checkpoint to the list
                 checkPoints.Add(checkpoint);
+
+                if (i != numCheckpoints - 1 && i != 0 && bonusPrefab != null)
+                {
+                    // Instantiate the bonus box
+                    GameObject bonusBox = Instantiate(bonusPrefab);
+                    bonusBox.GetComponent<BonusBox>().bonusType = BonusBox.BonusType.SpeedBoost;
+                    bonusBox.transform.SetParent(racePath.transform);
+                    bonusBox.transform.localPosition = racePath.m_Waypoints[i].position + Vector3.up * 5f; // Offset the bonus box slightly
+                    bonusBox.transform.rotation = checkpoint.transform.rotation;
+                    bonusBoxes.Add(bonusBox);
+                }
             }
         }
 

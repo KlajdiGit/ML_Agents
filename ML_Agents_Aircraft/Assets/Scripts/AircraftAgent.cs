@@ -53,6 +53,12 @@ namespace Aircraft
         private float maxRollAngle = 45f;
         private bool boost;
 
+
+
+        private bool hasSpeedBonus = false;
+        private float originalThrust; // Store the original thrust value
+
+
         /// <summary>
         /// Called when agent is first initialized
         /// </summary>
@@ -133,7 +139,7 @@ namespace Aircraft
         /// Collects observations used by the agent to make decisions
         /// </summary>
         /// <param name="sensor">The vector sensor</param>
-        public override void CollectObservations(VectorSensor sensor)
+      /*  public override void CollectObservations(VectorSensor sensor)
         {
             // Observer aircraft velocity (1 Vector3)
             sensor.AddObservation(transform.InverseTransformDirection(rigidbody.velocity));
@@ -146,7 +152,7 @@ namespace Aircraft
             sensor.AddObservation(transform.InverseTransformDirection(nextCheckpointForward));
 
             // Total Observations = 3 + 3 + 3 = 9
-        }
+        }*/
 
 
 
@@ -278,10 +284,29 @@ namespace Aircraft
         /// <param name="collision">Collision info</param>
         private void OnCollisionEnter(Collision collision)
         {
-            if(!collision.transform.CompareTag("agent"))
+            if (!collision.transform.CompareTag("agent"))
             {
-                //We hit something that wasn't another agent
-                if(area.trainingMode)
+                // Check if the object is a Bonus
+                if (collision.transform.CompareTag("Bonus"))
+                {
+                    BonusBox bonusBox = collision.gameObject.GetComponent<BonusBox>();
+                    if (bonusBox != null)
+                    {
+                        Debug.Log("Bonus type is: " + bonusBox.bonusType);
+
+                        // Optional: Add a reward during training mode
+                        if (area.trainingMode)
+                        {
+                            AddReward(1f);
+                        }
+
+                    }
+
+                    return; // Exit early since we handled the Bonus
+                }
+
+                // Handle collision with other objects
+                if (area.trainingMode)
                 {
                     AddReward(-1f);
                     EndEpisode();
@@ -291,8 +316,8 @@ namespace Aircraft
                     StartCoroutine(ExplosionReset());
                 }
             }
-            
         }
+
 
         /// <summary>
         /// Restes the aircraft to the most recent complete checkpoint
@@ -317,5 +342,108 @@ namespace Aircraft
 
             ThawAgent();
         }
+
+
+        public void ActivateSpeedBonus(float duration)
+        {
+            if (!hasSpeedBonus)
+            {
+                originalThrust = thrust; // Save the original thrust
+                thrust *= 1.5f; // Apply the bonus
+                hasSpeedBonus = true; // Mark as active
+
+                Debug.Log("Speed bonus activated for " + gameObject.name + " Current thrust: " + thrust);
+                StartCoroutine(ResetSpeedBonus(duration)); // Schedule reset
+            }
+        }
+
+
+        private IEnumerator ResetSpeedBonus(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            thrust = originalThrust; // Restore original thrust
+            hasSpeedBonus = false; // Mark as inactive
+
+            Debug.Log("Speed bonus ended for" +  gameObject.name +  " Current thrust: " + thrust);
+        }
+        /*
+                public override void CollectObservations(VectorSensor sensor)
+                {
+                    // Observe aircraft velocity (1 Vector3)
+                    sensor.AddObservation(transform.InverseTransformDirection(rigidbody.velocity));
+
+                    // Where is the next checkpoint? (1 Vector3)
+                    sensor.AddObservation(VectorToNextCheckpoint());
+
+                    // Orientation of the next checkpoint (1 Vector3)
+                    Vector3 nextCheckpointForward = area.checkPoints[NextCheckpointIndex].transform.forward;
+                    sensor.AddObservation(transform.InverseTransformDirection(nextCheckpointForward));
+
+                    // Where is the nearest bonus box? (1 Vector3)
+                    Vector3 nearestBonusBoxPosition = GetNearestBonusBoxPosition(); // Custom helper method
+                    Vector3 bonusBoxDirection = (nearestBonusBoxPosition - transform.position).normalized;
+                    sensor.AddObservation(transform.InverseTransformDirection(bonusBoxDirection));
+
+                    // Distance to the nearest bonus box (1 float)
+                    float bonusBoxDistance = Vector3.Distance(transform.position, nearestBonusBoxPosition);
+                    sensor.AddObservation(bonusBoxDistance);
+
+                    // Total Observations = 3 (velocity) + 3 (next checkpoint direction) + 3 (next checkpoint forward) 
+                    //                     + 3 (nearest bonus box direction) + 1 (bonus box distance) = 13
+                }
+        */
+
+        public override void CollectObservations(VectorSensor sensor)
+        {
+            // Observe aircraft velocity (1 Vector3)
+            var velocity = transform.InverseTransformDirection(rigidbody.velocity);
+            //Debug.Log($"Velocity Observation: {velocity}");
+            sensor.AddObservation(velocity);
+
+            // Where is the next checkpoint? (1 Vector3)
+            var checkpointDir = VectorToNextCheckpoint();
+            //Debug.Log($"Checkpoint Direction Observation: {checkpointDir}");
+            sensor.AddObservation(checkpointDir);
+
+            // Orientation of the next checkpoint (1 Vector3)
+            var nextCheckpointForward = area.checkPoints[NextCheckpointIndex].transform.forward;
+            //Debug.Log($"Checkpoint Forward Observation: {nextCheckpointForward}");
+            sensor.AddObservation(transform.InverseTransformDirection(nextCheckpointForward));
+
+            // Where is the nearest bonus box? (1 Vector3)
+            var nearestBonusBoxPos = GetNearestBonusBoxPosition();
+            var bonusBoxDirection = (nearestBonusBoxPos - transform.position).normalized;
+            //Debug.Log($"Nearest Bonus Box Direction Observation: {bonusBoxDirection}");
+            sensor.AddObservation(transform.InverseTransformDirection(bonusBoxDirection));
+
+            // Distance to the nearest bonus box (1 float)
+            var bonusBoxDistance = Vector3.Distance(transform.position, nearestBonusBoxPos);
+            //Debug.Log($"Bonus Box Distance Observation: {bonusBoxDistance}");
+            sensor.AddObservation(bonusBoxDistance);
+
+            // Validate total number of observations (should be 13)
+            //Debug.Log($"Total Observations Added: {sensor.ObservationSize()}");
+        }
+
+        private Vector3 GetNearestBonusBoxPosition()
+        {
+            Vector3 nearestPosition = Vector3.zero;
+            float minDistance = float.MaxValue;
+
+            // Iterate through all bonus boxes in the area
+            foreach (GameObject bonusBox in area.bonusBoxes) // Ensure `bonusPrefabs` is a list in AircraftArea
+            {
+                float distance = Vector3.Distance(transform.position, bonusBox.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestPosition = bonusBox.transform.position;
+                }
+            }
+            return nearestPosition;
+        }
+
+
     }
 }

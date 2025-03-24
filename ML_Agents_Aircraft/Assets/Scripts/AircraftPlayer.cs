@@ -48,6 +48,10 @@ namespace Aircraft
             // Boost: 1 == boost, 0 == no boost
             float boostValue = Mathf.Round(boostInput.ReadValue<float>());
 
+            // New action: Bonus activation (1 == activate, 0 == no bonus)
+            //float bonusValue = Mathf.Round(boostInput.ReadValue<float>());  
+
+
             // Convert -1 (down) to discrete value 2
             if (pitchValue == -1) pitchValue = 2f;
 
@@ -57,6 +61,10 @@ namespace Aircraft
             discreteActions[0] = (int)pitchValue;
             discreteActions[1] = (int)yawValue;
             discreteActions[2] = (int)boostValue;
+
+
+            //discreteActions[3] = (int)bonusValue;  
+
         }
 
         /// <summary>

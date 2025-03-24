@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4928328753548919864, guid: 4fab7b377a118b64991415255308496f, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -241,6 +245,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4928328753548919864, guid: 4fab7b377a118b64991415255308496f, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -259,6 +267,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 659514551}
     m_Modifications:
+    - target: {fileID: 3395682686428960583, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8218896596929208860, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -365,6 +377,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7156446127246347917, guid: b2edfacbca9fa784a830f04df2db27a3, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -427,6 +443,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4928328753548919864, guid: 4fab7b377a118b64991415255308496f, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -445,6 +465,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1139754770}
     m_Modifications:
+    - target: {fileID: 3395682686428960583, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8218896596929208860, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -551,6 +575,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7156446127246347917, guid: b2edfacbca9fa784a830f04df2db27a3, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -577,6 +605,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DesertArea (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 3706021982546787045, guid: 41e79109dc955a4488d21d224388d230, type: 3}
     - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
       propertyPath: trainingMode
       value: 1
@@ -651,6 +683,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1528942771}
     m_Modifications:
+    - target: {fileID: 3395682686428960583, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8218896596929208860, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -713,6 +749,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 985404781}
     m_Modifications:
+    - target: {fileID: 4049842278404993308, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7287791325734962247, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -819,6 +859,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7156446127246347917, guid: b2edfacbca9fa784a830f04df2db27a3, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -840,6 +884,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DesertArea (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 3706021982546787045, guid: 41e79109dc955a4488d21d224388d230, type: 3}
     - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
       propertyPath: trainingMode
       value: 1
@@ -958,6 +1006,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4928328753548919864, guid: 4fab7b377a118b64991415255308496f, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -979,6 +1031,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DesertArea (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 3706021982546787045, guid: 41e79109dc955a4488d21d224388d230, type: 3}
     - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
       propertyPath: trainingMode
       value: 1
@@ -1053,6 +1109,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1139754770}
     m_Modifications:
+    - target: {fileID: 4049842278404993308, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7287791325734962247, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -1120,6 +1180,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 985404781}
     m_Modifications:
+    - target: {fileID: 3395682686428960583, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8218896596929208860, guid: e232541af5aed8f45a5063412f9cdf24, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -1283,6 +1347,10 @@ PrefabInstance:
       value: DesertArea
       objectReference: {fileID: 0}
     - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 3706021982546787045, guid: 41e79109dc955a4488d21d224388d230, type: 3}
+    - target: {fileID: 7114008058312164511, guid: 46f1a3f0019703d4492ece2bd1d1914b, type: 3}
       propertyPath: trainingMode
       value: 1
       objectReference: {fileID: 0}
@@ -1395,6 +1463,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7156446127246347917, guid: b2edfacbca9fa784a830f04df2db27a3, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1418,6 +1490,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1528942771}
     m_Modifications:
+    - target: {fileID: 4049842278404993308, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7287791325734962247, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
@@ -1574,6 +1650,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 659514551}
     m_Modifications:
+    - target: {fileID: 4049842278404993308, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7287791325734962247, guid: 2f391d6f187445943a5c2f01ebb45926, type: 3}
       propertyPath: m_LocalPosition.x
       value: -140.8914
