@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.MLAgents;
 
 namespace Aircraft
 {
@@ -27,7 +28,16 @@ namespace Aircraft
                 AircraftAgent agent = other.GetComponent<AircraftAgent>();
                 if (agent != null)
                 {
-                    agent.ActivateSpeedBonus(duration); // Notify the agent about the bonus
+
+                    agent.AddReward(2f);
+                    if (this.bonusType == BonusType.SpeedBoost)
+                    {
+                        agent.ActivateSpeedBonus(duration); // Notify the agent about the bonus
+                    }
+                    else if (this.bonusType == BonusType.Bullets)
+                    {
+                        agent.ActivateBulletBonus();
+                    }
                     StartCoroutine(RespawnBonusBox()); // Handle visibility and respawn
                 }
             }

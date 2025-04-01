@@ -28,7 +28,18 @@ namespace Aircraft
         [Tooltip("Number of steps to time out after in training")]
         public int stepTimeout = 300;
 
-        public int NextCheckpointIndex {  get; set; }   
+        public int NextCheckpointIndex {  get; set; }
+
+        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private Transform bulletSpawnPoint;
+
+        [SerializeField] private float bulletSpeed = 1000f;
+        [SerializeField] private float bulletSpawnDuration = 5f;
+        [SerializeField] private float bulletFireRate = 2f;
+        private bool isBulletSpawning = false;
+
+        [SerializeField] private Material speedBonusTrailColor;
+        [SerializeField] private Material originalTrailColor;
 
 
         // Components to keep track of
@@ -323,7 +334,7 @@ namespace Aircraft
         /// Restes the aircraft to the most recent complete checkpoint
         /// </summary>
         /// <returns> yield return</returns>
-        private IEnumerator ExplosionReset()
+        public IEnumerator ExplosionReset()
         {
             FreezeAgent();
 
@@ -352,10 +363,29 @@ namespace Aircraft
                 thrust *= 1.5f; // Apply the bonus
                 hasSpeedBonus = true; // Mark as active
 
+                // Modify the trail renderer properties
+                TrailRenderer trail = GetComponent<TrailRenderer>(); // Ensure your aircraft has a TrailRenderer component
+                
+                
+                if (trail != null)
+                {
+                    if (trail != null && speedBonusTrailColor != null)
+                    {
+                        trail.material = speedBonusTrailColor;
+                        Debug.Log("Checkpoint material successfully assigned!");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Checkpoint material reference is missing!");
+                    }
+
+                }
+
                 Debug.Log("Speed bonus activated for " + gameObject.name + " Current thrust: " + thrust);
                 StartCoroutine(ResetSpeedBonus(duration)); // Schedule reset
             }
         }
+
 
 
         private IEnumerator ResetSpeedBonus(float delay)
@@ -364,7 +394,18 @@ namespace Aircraft
 
             thrust = originalThrust; // Restore original thrust
             hasSpeedBonus = false; // Mark as inactive
+            if (trail != null)
+            {
+                if (trail != null && originalTrailColor != null)
+                {
+                    trail.material = originalTrailColor;
+                }
+                else
+                {
+                    Debug.LogWarning("Checkpoint material reference is missing!");
+                }
 
+            }
             Debug.Log("Speed bonus ended for" +  gameObject.name +  " Current thrust: " + thrust);
         }
         /*
@@ -444,6 +485,49 @@ namespace Aircraft
             return nearestPosition;
         }
 
+        /// <summary>
+        /// Activates the bullet bonus functionality
+        /// </summary>
+        public void ActivateBulletBonus()
+        {
+            if (!isBulletSpawning)
+            {
+                isBulletSpawning = true;
+                StartCoroutine(SpawnBullets());
+            }
+        }
+
+        private IEnumerator SpawnBullets()
+        {
+            float spawnInterval = 1f / bulletFireRate;
+            Debug.Log($"bulletSpawnDuration: {bulletSpawnDuration}, bulletFireRate: {bulletFireRate}, spawnInterval: {spawnInterval}");
+
+            int expectedBullets = Mathf.FloorToInt(bulletSpawnDuration / spawnInterval);
+            Debug.Log($"Expected bullets to spawn: {expectedBullets}");
+
+            // Temporarily decrease thrust while firing bullets
+            float originalThrust = thrust;
+            thrust /= 2; // Reduce thrust by half
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (!gameObject.activeInHierarchy) // If the plane is destroyed
+                {
+                    Debug.Log("Plane destroyed. Stopping bullet spawning.");
+                    break; // Exit the loop immediately
+                }
+                GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+                Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                rb.velocity = bulletSpawnPoint.forward * bulletSpeed;
+                Debug.Log($"Spawn bullet {i + 1}");
+
+                yield return new WaitForSeconds(spawnInterval);
+            }
+
+            // Restore original thrust after bullet spawning
+            thrust = originalThrust;
+            isBulletSpawning = false;
+        }
 
     }
 }

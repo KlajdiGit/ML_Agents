@@ -84,19 +84,34 @@ namespace Aircraft
                 // Add the checkpoint to the list
                 checkPoints.Add(checkpoint);
 
+                // Create bonus boxes
                 if (i != numCheckpoints - 1 && i != 0 && bonusPrefab != null)
                 {
-                    // Instantiate the bonus box
-                    GameObject bonusBox = Instantiate(bonusPrefab);
-                    bonusBox.GetComponent<BonusBox>().bonusType = BonusBox.BonusType.SpeedBoost;
-                    bonusBox.transform.SetParent(racePath.transform);
-                    bonusBox.transform.localPosition = racePath.m_Waypoints[i].position + Vector3.up * 5f; // Offset the bonus box slightly
-                    bonusBox.transform.rotation = checkpoint.transform.rotation;
-                    bonusBoxes.Add(bonusBox);
+                    // Calculate side offsets using the checkpoint's local right direction
+                    Vector3 rightOffset = checkpoint.transform.right * 3f; // Distance to place the bonus boxes apart
+
+                    // First bonus box
+                    GameObject bonusBox1 = Instantiate(bonusPrefab);
+                    //bonusBox1.GetComponent<BonusBox>().bonusType = BonusBox.BonusType.SpeedBoost; // Example bonus type
+                    BonusBox.BonusType randomType = (Random.Range(0, 2) == 0) ? BonusBox.BonusType.SpeedBoost : BonusBox.BonusType.Bullets;
+                    bonusBox1.GetComponent<BonusBox>().bonusType = randomType; // Assign the random type
+                    bonusBox1.transform.SetParent(racePath.transform);
+                    bonusBox1.transform.localPosition = racePath.m_Waypoints[i].position + Vector3.up * 5f + rightOffset;
+                    bonusBox1.transform.rotation = checkpoint.transform.rotation;
+                    bonusBoxes.Add(bonusBox1);
+
+                    // Second bonus box
+                    GameObject bonusBox2 = Instantiate(bonusPrefab);
+                    //bonusBox2.GetComponent<BonusBox>().bonusType = BonusBox.BonusType.SpeedBoost; // Example bonus type
+                    randomType = (Random.Range(0, 2) == 0) ? BonusBox.BonusType.SpeedBoost : BonusBox.BonusType.Bullets;
+                    bonusBox2.GetComponent<BonusBox>().bonusType = randomType; // Assign the random type
+                    bonusBox2.transform.SetParent(racePath.transform);
+                    bonusBox2.transform.localPosition = racePath.m_Waypoints[i].position + Vector3.up * 5f - rightOffset;
+                    bonusBox2.transform.rotation = checkpoint.transform.rotation;
+                    bonusBoxes.Add(bonusBox2);
                 }
             }
         }
-
 
         /// <summary>
         ///  Resets the position of an agent using its current NextCheckpointIndex, unless

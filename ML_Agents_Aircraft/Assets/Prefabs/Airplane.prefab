@@ -120,6 +120,37 @@ MonoBehaviour:
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0
   m_EndVerticalOffset: 0
+--- !u!1 &8010929503649797277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5695502526595300686}
+  m_Layer: 0
+  m_Name: BulletSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5695502526595300686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010929503649797277}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.22, z: 2.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1834215616593768803}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9102702793105793148
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,6 +306,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4138097739440023171}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5695502526595300686}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 494fb7c9b03d0ea4aab002936c502065, type: 3}
       insertIndex: -1
@@ -537,6 +571,13 @@ MonoBehaviour:
   meshObject: {fileID: 5378658374326054122}
   explosionEffect: {fileID: 4134610081655324431}
   stepTimeout: 300
+  bulletPrefab: {fileID: 7045911235858159126, guid: fd5c605f95e8efe43abaa553c477a2a4, type: 3}
+  bulletSpawnPoint: {fileID: 5695502526595300686}
+  bulletSpeed: 50
+  bulletSpawnDuration: 5
+  bulletFireRate: 0.5
+  speedBonusTrailColor: {fileID: 2100000, guid: 6b59621f631044f479fe6d5b05c8fdb6, type: 2}
+  originalTrailColor: {fileID: 2100000, guid: c57a03f298f24fb4a82514c9ff1427ed, type: 2}
 --- !u!114 &8634294807149940512
 MonoBehaviour:
   m_ObjectHideFlags: 0
