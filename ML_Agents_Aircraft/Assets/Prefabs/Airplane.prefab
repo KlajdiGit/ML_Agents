@@ -539,7 +539,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 281d0ec8ce3c80f43b85a28e0f7b172c, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 2b4d40c758bc9da44b05f2b81a5375b3, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: AircraftLearning
